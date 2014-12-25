@@ -1,16 +1,16 @@
 {
   "name": "sai-perf",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "",
-  "keywords": [],
-  "homepage": "",
+  "keywords": ["Sai", "performance"],
+  "homepage": "https://github.com/saijs/sai-perf",
   "author": "hotoo <hotoo.cn@gmail.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@github.com:saijs/sai-perf.git"
   },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/saijs/sai-perf/issues"
   },
   "licenses": "MIT",
   "spm": {
