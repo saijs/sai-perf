@@ -2,7 +2,10 @@
   "name": "sai-perf",
   "version": "0.1.0",
   "description": "",
-  "keywords": ["Sai", "performance"],
+  "keywords": [
+    "Sai",
+    "performance"
+  ],
   "homepage": "https://github.com/saijs/sai-perf",
   "author": "hotoo <hotoo.cn@gmail.com>",
   "repository": {
@@ -16,9 +19,13 @@
   "spm": {
     "main": "index.js",
     "dependencies": {
+      "sai": "3.0.0",
+      "ready": "0.0.0",
+      "detector": "2.2.0"
     },
     "devDependencies": {
-      "expect.js": "0.3.1"
+      "expect.js": "0.3.1",
+      "jquery": "2.1.1"
     }
   }
 }
