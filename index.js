@@ -8,22 +8,6 @@ var Sai = require("sai");
 var ready = require("ready");
 var detector = require("detector");
 
-var HAR = {
-  "log": {
-    "version" : "1.2",
-    "creator" : {
-      "name": "Sai-perf",
-      "version": "<%=version%>"
-    },
-    "browser" : {
-      "name": detector.browser.name,
-      "version": detector.browser.fullVersion
-    },
-    "pages": [],
-    "entries": []
-  }
-};
-
 var Performance = {
   wait: 0,
   redirect: 0,
@@ -80,6 +64,22 @@ Sai.perf = function(){
 
   var page_id = "p0";
 
+  var HAR = {
+    "log": {
+      "version" : "1.2",
+      "creator" : {
+        "name": "Sai-perf",
+        "version": "<%=version%>"
+      },
+      "browser" : {
+        "name": detector.browser.name,
+        "version": detector.browser.fullVersion
+      },
+      "pages": [],
+      "entries": []
+    }
+  };
+
   HAR.log.pages.push({
     "startedDateTime": 0,
     "id": page_id,
@@ -105,19 +105,9 @@ Sai.perf = function(){
       "connect": performanceTiming.connectEnd - performanceTiming.connectStart, // tcp connect.
       "send": performanceTiming.responseStart - performanceTiming.requestStart, // request.
       "receive": performanceTiming.responseEnd - performanceTiming.responseStart, // response
-      "ssl": performanceTiming.secureConnectionStart === 0 ? -1 : performanceTiming.secureConnectionStart - performanceTiming.connectStart
+      "ssl": performanceTiming.secureConnectionStart === 0 ? 0 : performanceTiming.connectEnd - performanceTiming.secureConnectionStart
     }
   });
-
-  //performance[loc.href] = merge(getPerformance(performanceTiming, navigationStart),
-    //{
-      //unload: performanceTiming.unloadEventEnd - performanceTiming.unloadEventStart, // 0, referrer page unload event.
-      //interactive: performanceTiming.domInteractive - performanceTiming.domLoading,
-      //domready: performanceTiming.domContentLoadedEventStart - performanceTiming.domInteractive, // 过早获取时 domComplete 有时会是 0
-      //domcomplete: performanceTiming.domComplete === 0 ? 0 : performanceTiming.domComplete - performanceTiming.domLoading, // domComplete:0
-      //load: performanceTiming.loadEventEnd - performanceTiming.loadEventStart, // 0
-    //}
-  //);
 
   if (!win.performance.getEntriesByType) {
     return HAR;
@@ -127,7 +117,6 @@ Sai.perf = function(){
 
   for (var i = 0, l = resourceList.length, resourceTiming; i < l; i++) {
     resourceTiming = resourceList[i];
-    //performance[resourceTiming.name] = getPerformance(resourceTiming, navigationStart);
 
     HAR.log.entries.push({
       "pageref": page_id,
@@ -143,7 +132,7 @@ Sai.perf = function(){
         "connect": resourceTiming.connectEnd - resourceTiming.connectStart, // tcp connect.
         "send": resourceTiming.responseStart - resourceTiming.requestStart, // request.
         "receive": resourceTiming.responseEnd - resourceTiming.responseStart, // response
-        "ssl": resourceTiming.secureConnectionStart === 0 ? -1 : resourceTiming.secureConnectionStart - resourceTiming.connectStart
+        "ssl": resourceTiming.secureConnectionStart === 0 ? 0 : resourceTiming.connectEnd - resourceTiming.secureConnectionStart
       }
     });
   }
@@ -151,10 +140,47 @@ Sai.perf = function(){
   return HAR;
 };
 
-win.onbeforeunload = function(){
-  //Sai.log({
-    //"test": "TEST"
-  //})
+win.onload = function(){
+
+  var perf = Sai.perf()
+  console.log(perf)
+  var pageTimings = perf.log.pages[0].pageTimings
+  var entries = perf.log.entries
+
+  Sai.log({
+    profile: "perf-entrie",
+    url: entries[0].request.url,
+    startTime: entries[0].timings.startedDateTime,
+    blocked: entries[0].timings.blocked,
+    dns: entries[0].timings.dns,
+    connect: entries[0].timings.connect,
+    send: entries[0].timings.send,
+    receive: entries[0].timings.receive,
+    ssl: entries[0].timings.ssl
+  })
+
+  Sai.log({
+    "profile": "perf-page",
+    "load": pageTimings.onLoad,
+    "ready": pageTimings.onContentLoad,
+    "tti": pageTimings._TTI
+  })
+
+  for(var i=0,l=entries.length; i<l; i++){
+    Sai.log({
+      profile: "perf-entrie",
+      url: entries[i].request.url,
+      startTime: entries[i].timings.startedDateTime,
+      blocked: entries[i].timings.blocked,
+      dns: entries[i].timings.dns,
+      connect: entries[i].timings.connect,
+      send: entries[i].timings.send,
+      receive: entries[i].timings.receive,
+      ssl: entries[i].timings.ssl
+    })
+  }
+  console.log(perf)
+
 };
 
 module.exports = Sai;
