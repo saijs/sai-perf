@@ -102,8 +102,8 @@ Sai.perf = function(){
     "timings": {
       "blocked": performanceTiming.fetchStart - navigationStart, // stalled.
       "dns": performanceTiming.domainLookupEnd - performanceTiming.domainLookupStart, // dnslookup.
-      "connect": performanceTiming.connectEnd - performanceTiming.connectStart, // tcp connect.
-      "send": performanceTiming.responseStart - performanceTiming.requestStart, // request.
+      "connect": performanceTiming.connectEnd - performanceTiming.connectStart, // tcp connect (include ssl negotiation).
+      "send": performanceTiming.responseStart - performanceTiming.requestStart, // request (waiting).
       "receive": performanceTiming.responseEnd - performanceTiming.responseStart, // response
       "ssl": performanceTiming.secureConnectionStart === 0 ? 0 : performanceTiming.connectEnd - performanceTiming.secureConnectionStart
     }
