@@ -1,0 +1,167 @@
+
+#timing-overview {
+  background-image: url(timing-overview-2.png);
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: contain;
+
+  position: relative;
+  width: 800px;
+  height: 500px;
+  margin-right: 200px
+}
+#navigationStart {
+  left: 330px;
+  top: 0px;
+}
+#redirectStart {
+  left: 330px;
+  top: 20px;
+}
+#redirectEnd {
+  left: 330px;
+  top: 40px;
+}
+#fetchStart {
+  left: 340px;
+  top: 60px;
+}
+#domainLookupStart {
+  left: 430px;
+  top: 78px;
+}
+#domainLookupEnd {
+  left: 440px;
+  top: 95px;
+}
+#connectStart {
+  left: 440px;
+  top: 113px;
+}
+#secureConnectionStart {
+  left: 525px;
+  top: 135px;
+}
+#connectEnd {
+  left: 480px;
+  top: 152px;
+}
+#requestStart {
+  left: 500px;
+  top: 170px;
+}
+#responseStart {
+  left: 550px;
+  top: 188px;
+}
+#responseEnd {
+  left: 590px;
+  top: 208px;
+}
+
+#unloadEventStart {
+  left: 670px;
+  top: 468px;
+}
+#unloadEventEnd {
+  left: 680px;
+  top: 446px;
+}
+#domLoading {
+  left: 695px;
+  top: 428px;
+}
+#domInteractive {
+  left: 725px;
+  top: 405px;
+}
+#domContentLoadedEventStart {
+  left: 795px;
+  top: 385px;
+}
+#domContentLoadedEventEnd {
+  left: 805px;
+  top: 363px;
+}
+#domComplete {
+  left: 795px;
+  top: 338px;
+}
+#loadEventStart {
+  left: 715px;
+  top: 158px;
+}
+#loadEventEnd {
+  left: 755px;
+  top: 135px;
+}
+
+
+
+#resource-overview {
+  width: 800px;
+  height: 400px;
+  background-image: url(./resource-timing-overview-1.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  margin-right: 200px;
+}
+
+#timing-overview > span ,
+#resource-overview > span {
+  position: absolute;
+  font-size: 11px;
+  color: #f00;
+}
+
+#resource-startTime {
+  left: 180px;
+  top: 18px;
+}
+#resource-redirectStart {
+  left: 220px;
+  top: 32px;
+}
+#resource-redirectEnd {
+  left: 300px;
+  top: 45px;
+}
+#resource-fetchStart {
+  left: 350px;
+  top: 68px;
+}
+#resource-domainLookupStart {
+  left: 440px;
+  top: 85px;
+}
+#resource-domainLookupEnd {
+  left: 480px;
+  top: 100px;
+}
+#resource-connectStart {
+  left: 470px;
+  top: 118px;
+}
+#resource-secureConnectionStart {
+  left: 550px;
+  top: 132px;
+}
+#resource-connectEnd {
+  left: 510px;
+  top: 145px;
+}
+#resource-requestStart {
+  left: 550px;
+  top: 163px;
+}
+#resource-responseStart {
+  left: 660px;
+  top: 178px;
+}
+#resource-responseEnd {
+  left: 800px;
+  top: 190px;
+}
