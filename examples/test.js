@@ -48,19 +48,20 @@ window.addEventListener("load", function(){
     } else if (window.chrome && chrome.loadTimes) {
       firstPaint = chrome.loadTimes().firstPaintTime * 1000
     }
+    var hasSSL = !!performanceTiming.secureConnectionStart
     $("output-page-performance").innerHTML = [
       '<strong>Performance Timing</strong>',
       // 'Page Load: ' + (performanceTiming.loadEventStart - performanceTiming.navigationStart),
       // 'DOM Ready: ' + (performanceTiming.loadEventStart - performanceTiming.navigationStart),
-      'TTFB: ' + (performanceTiming.responseStart - performanceTiming.navigationStart),
       'First Paint: ' + (firstPaint ? firstPaint - performanceTiming.navigationStart : 0) + '(' + firstPaint + ', ' + performanceTiming.navigationStart + ')',
       '',
       'unload: ' + (performanceTiming.unloadEventEnd - performanceTiming.unloadEventStart),
       'redirect: ' + (performanceTiming.redirectEnd - performanceTiming.redirectStart),
       'appcache: ' + (performanceTiming.domainLookupStart - performanceTiming.fetchStart),
-      'dns: ' + (performanceTiming.domainLookupEnd - performanceTiming.domainLookupStart),
-      'tcp: ' + (performanceTiming.connectEnd - performanceTiming.connectStart),
-      'request: ' + (performanceTiming.responseStart - performanceTiming.requestStart),
+      'dns lookup: ' + (performanceTiming.domainLookupEnd - performanceTiming.domainLookupStart),
+      'tcp connect: ' + (performanceTiming.connectEnd - performanceTiming.connectStart),
+      'ssl negotiation: ' + (hasSSL ? performanceTiming.connectEnd - performanceTiming.secureConnectionStart : -1),
+      'request (TTFB): ' + (performanceTiming.responseStart - performanceTiming.requestStart),
       'response: ' + (performanceTiming.responseEnd - performanceTiming.responseStart),
       'processing: ' + (performanceTiming.domComplete ? performanceTiming.domComplete - performanceTiming.responseStart : 0), // domComplete | loadEventStart
       'load: ' + (performanceTiming.loadEventEnd ? performanceTiming.loadEventEnd - performanceTiming.loadEventStart : 0)
@@ -89,6 +90,7 @@ window.addEventListener("load", function(){
         $("resource-" + type + "-responseEnd").innerHTML = resourceTiming.responseEnd
 
         var isRestricted = !resourceTiming.requestStart
+        var hasSSL = !!resourceTiming.secureConnectionStart
         var redirect = isRestricted ? -1 : resourceTiming.redirectEnd - resourceTiming.redirectStart
         var appcache = isRestricted ? -1 : resourceTiming.domainLookupStart - resourceTiming.fetchStart
         var dns = isRestricted ? -1 : resourceTiming.domainLookupEnd - resourceTiming.domainLookupStart
@@ -108,8 +110,9 @@ window.addEventListener("load", function(){
           '',
           'redirect: ' + redirect,
           'appcache: ' + appcache,
-          'dns: ' + dns,
-          'tcp: ' + tcp,
+          'dns lookup: ' + dns,
+          'tcp connect: ' + tcp,
+          'ssl negotiation: ' + (hasSSL ? resourceTiming.connectEnd - resourceTiming.secureConnectionStart : -1),
           'request (TTFB): ' + request,
           'response: ' + response,
         ].join('<br/>')
