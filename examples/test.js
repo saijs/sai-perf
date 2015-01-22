@@ -53,7 +53,7 @@ window.addEventListener("load", function(){
       '<strong>Performance Timing</strong>',
       // 'Page Load: ' + (performanceTiming.loadEventStart - performanceTiming.navigationStart),
       // 'DOM Ready: ' + (performanceTiming.loadEventStart - performanceTiming.navigationStart),
-      'First Paint: ' + (firstPaint ? firstPaint - performanceTiming.navigationStart : 0) + '(' + firstPaint + ', ' + performanceTiming.navigationStart + ')',
+      'First Paint: ' + (firstPaint ? firstPaint - performanceTiming.navigationStart : -1) + '(' + firstPaint + ', ' + performanceTiming.navigationStart + ')',
       '',
       'unload: ' + (performanceTiming.unloadEventEnd - performanceTiming.unloadEventStart),
       'redirect: ' + (performanceTiming.redirectEnd - performanceTiming.redirectStart),
