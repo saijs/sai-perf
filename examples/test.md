@@ -7,7 +7,7 @@
 
 ## Page Performance
 
-<div id="timing-overview">
+<div class="timing-overview">
   <span id="navigationStart"></span>
   <span id="redirectStart"></span>
   <span id="redirectEnd"></span>
@@ -34,23 +34,63 @@
 <div id="output-page-performance"></div>
 
 
-## Resource Performance
+## Resource Performance (same origin)
 
-<div id="resource-overview">
-  <span id="resource-startTime"></span>
-  <span id="resource-redirectStart"></span>
-  <span id="resource-redirectEnd"></span>
-  <span id="resource-fetchStart"></span>
-  <span id="resource-domainLookupStart"></span>
-  <span id="resource-domainLookupEnd"></span>
-  <span id="resource-connectStart"></span>
-  <span id="resource-secureConnectionStart"></span>
-  <span id="resource-connectEnd"></span>
-  <span id="resource-requestStart"></span>
-  <span id="resource-responseStart"></span>
-  <span id="resource-responseEnd"></span>
+<div class="resource-overview">
+  <span id="resource-same-origin-startTime" class="resource-startTime"></span>
+  <span id="resource-same-origin-redirectStart" class="resource-redirectStart"></span>
+  <span id="resource-same-origin-redirectEnd" class="resource-redirectEnd"></span>
+  <span id="resource-same-origin-fetchStart" class="resource-fetchStart"></span>
+  <span id="resource-same-origin-domainLookupStart" class="resource-domainLookupStart"></span>
+  <span id="resource-same-origin-domainLookupEnd" class="resource-domainLookupEnd"></span>
+  <span id="resource-same-origin-connectStart" class="resource-connectStart"></span>
+  <span id="resource-same-origin-secureConnectionStart" class="resource-secureConnectionStart"></span>
+  <span id="resource-same-origin-connectEnd" class="resource-connectEnd"></span>
+  <span id="resource-same-origin-requestStart" class="resource-requestStart"></span>
+  <span id="resource-same-origin-responseStart" class="resource-responseStart"></span>
+  <span id="resource-same-origin-responseEnd" class="resource-responseEnd"></span>
 </div>
 
-<div id="output-resource-performance"></div>
+<div id="output-resource-same-origin-performance"></div>
+
+
+## Resource Performance (different origin)
+
+<div class="resource-overview">
+  <span id="resource-diff-origin-startTime" class="resource-startTime"></span>
+  <span id="resource-diff-origin-redirectStart" class="resource-redirectStart"></span>
+  <span id="resource-diff-origin-redirectEnd" class="resource-redirectEnd"></span>
+  <span id="resource-diff-origin-fetchStart" class="resource-fetchStart"></span>
+  <span id="resource-diff-origin-domainLookupStart" class="resource-domainLookupStart"></span>
+  <span id="resource-diff-origin-domainLookupEnd" class="resource-domainLookupEnd"></span>
+  <span id="resource-diff-origin-connectStart" class="resource-connectStart"></span>
+  <span id="resource-diff-origin-secureConnectionStart" class="resource-secureConnectionStart"></span>
+  <span id="resource-diff-origin-connectEnd" class="resource-connectEnd"></span>
+  <span id="resource-diff-origin-requestStart" class="resource-requestStart"></span>
+  <span id="resource-diff-origin-responseStart" class="resource-responseStart"></span>
+  <span id="resource-diff-origin-responseEnd" class="resource-responseEnd"></span>
+</div>
+
+<div id="output-resource-diff-origin-performance"></div>
+
+
+## Resource Performance (different origin, and `Timing-Allow-Origin`)
+
+<div class="resource-overview">
+  <span id="resource-cors-origin-startTime" class="resource-startTime"></span>
+  <span id="resource-cors-origin-redirectStart" class="resource-redirectStart"></span>
+  <span id="resource-cors-origin-redirectEnd" class="resource-redirectEnd"></span>
+  <span id="resource-cors-origin-fetchStart" class="resource-fetchStart"></span>
+  <span id="resource-cors-origin-domainLookupStart" class="resource-domainLookupStart"></span>
+  <span id="resource-cors-origin-domainLookupEnd" class="resource-domainLookupEnd"></span>
+  <span id="resource-cors-origin-connectStart" class="resource-connectStart"></span>
+  <span id="resource-cors-origin-secureConnectionStart" class="resource-secureConnectionStart"></span>
+  <span id="resource-cors-origin-connectEnd" class="resource-connectEnd"></span>
+  <span id="resource-cors-origin-requestStart" class="resource-requestStart"></span>
+  <span id="resource-cors-origin-responseStart" class="resource-responseStart"></span>
+  <span id="resource-cors-origin-responseEnd" class="resource-responseEnd"></span>
+</div>
+
+<div id="output-resource-cors-origin-performance"></div>
 
 <script type="text/javascript" src="./test.js?nowrap"></script>

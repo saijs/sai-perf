@@ -4,7 +4,9 @@ var imgSameOrigin = new Image(1,1)
 imgSameOrigin.src = "./resource-timing-overview-1.png"
 var imgDiffOrigin = new Image(1,1)
 imgDiffOrigin.src = "https://i.alipayobjects.com/i/localhost/png/201404/2Tdj3TmMdR.png"
-//var imgCORSOrigin = new Image("")
+var jsCORSOrigin = document.createElement("script")
+jsCORSOrigin.src = "http://a.disquscdn.com/embed.js"
+document.body.appendChild(jsCORSOrigin)
 
 function endsWith(string, suffix){
   return string.indexOf(suffix, string.length - suffix.length) !== -1;
@@ -72,43 +74,60 @@ window.addEventListener("load", function(){
 
     var resourceList = window.performance.getEntriesByType("resource");
 
+    function drawResourceTiming(type, resourceTiming){
+        $("resource-" + type + "-startTime").innerHTML = resourceTiming.startTime
+        $("resource-" + type + "-redirectStart").innerHTML = resourceTiming.redirectStart
+        $("resource-" + type + "-redirectEnd").innerHTML = resourceTiming.redirectEnd
+        $("resource-" + type + "-fetchStart").innerHTML = resourceTiming.fetchStart
+        $("resource-" + type + "-domainLookupStart").innerHTML = resourceTiming.domainLookupStart
+        $("resource-" + type + "-domainLookupEnd").innerHTML = resourceTiming.domainLookupEnd
+        $("resource-" + type + "-connectStart").innerHTML = resourceTiming.connectStart
+        $("resource-" + type + "-secureConnectionStart").innerHTML = resourceTiming.secureConnectionStart
+        $("resource-" + type + "-connectEnd").innerHTML = resourceTiming.connectEnd
+        $("resource-" + type + "-requestStart").innerHTML = resourceTiming.requestStart
+        $("resource-" + type + "-responseStart").innerHTML = resourceTiming.responseStart
+        $("resource-" + type + "-responseEnd").innerHTML = resourceTiming.responseEnd
+
+        var isRestricted = !resourceTiming.requestStart
+        var redirect = isRestricted ? -1 : resourceTiming.redirectEnd - resourceTiming.redirectStart
+        var appcache = isRestricted ? -1 : resourceTiming.domainLookupStart - resourceTiming.fetchStart
+        var dns = isRestricted ? -1 : resourceTiming.domainLookupEnd - resourceTiming.domainLookupStart
+        var tcp = isRestricted ? -1 : resourceTiming.connectEnd - resourceTiming.connectStart
+        var request = isRestricted ? -1 : resourceTiming.responseStart - resourceTiming.requestStart
+        var response = isRestricted ? -1 : resourceTiming.responseEnd - resourceTiming.responseStart
+        var networkDuration = isRestricted ? -1 : dns + tcp + request + response
+
+        $("output-resource-" + type + "-performance").innerHTML = [
+          '<strong>Resource Timing</strong>',
+          'initiatorType: ' + resourceTiming.initiatorType,
+          'restricted: ' + isRestricted,
+          'TTFB: ' + (isRestricted ? -1 : resourceTiming.responseStart - resourceTiming.startTime),
+          'duration: ' + (resourceTiming.duration),
+          'duration (responseEnd - startTime): ' + (resourceTiming.responseEnd - resourceTiming.startTime),
+          'network duration (dns + tcp + waiting(request,TTFB) + response(connect)): ' + networkDuration,
+          '',
+          'redirect: ' + redirect,
+          'appcache: ' + appcache,
+          'dns: ' + dns,
+          'tcp: ' + tcp,
+          'request (TTFB): ' + request,
+          'response: ' + response,
+        ].join('<br/>')
+    }
+
     for (var i = 0, l = resourceList.length, resourceTiming; i < l; i++) {
       resourceTiming = resourceList[i];
       //if (endsWith(resourceTiming.name, "/resource-timing-overview-1.png")) {
-      if (resourceTiming.name == imgDiffOrigin.src) {
-
-        $("resource-startTime").innerHTML = resourceTiming.startTime
-        $("resource-redirectStart").innerHTML = resourceTiming.redirectStart
-        $("resource-redirectEnd").innerHTML = resourceTiming.redirectEnd
-        $("resource-fetchStart").innerHTML = resourceTiming.fetchStart
-        $("resource-domainLookupStart").innerHTML = resourceTiming.domainLookupStart
-        $("resource-domainLookupEnd").innerHTML = resourceTiming.domainLookupEnd
-        $("resource-connectStart").innerHTML = resourceTiming.connectStart
-        $("resource-secureConnectionStart").innerHTML = resourceTiming.secureConnectionStart
-        $("resource-connectEnd").innerHTML = resourceTiming.connectEnd
-        $("resource-requestStart").innerHTML = resourceTiming.requestStart
-        $("resource-responseStart").innerHTML = resourceTiming.responseStart
-        $("resource-responseEnd").innerHTML = resourceTiming.responseEnd
-
-        $("output-resource-performance").innerHTML = [
-          '<strong>Resource Timing</strong>',
-          'initiatorType: ' + resourceTiming.initiatorType,
-          'TTFB: ' + (resourceTiming.responseStart ? resourceTiming.responseStart - resourceTiming.startTime : 0),
-          'duration: ' + (resourceTiming.duration),
-          'duration (responseEnd - startTime): ' + (resourceTiming.responseEnd - resourceTiming.startTime),
-          '',
-          'redirect: ' + (resourceTiming.redirectEnd - resourceTiming.redirectStart),
-          'appcache: ' + (resourceTiming.domainLookupStart ? resourceTiming.domainLookupStart - resourceTiming.fetchStart : 0),
-          'dns: ' + (resourceTiming.domainLookupEnd - resourceTiming.domainLookupStart),
-          'tcp: ' + (resourceTiming.connectEnd - resourceTiming.connectStart),
-          'request: ' + (resourceTiming.responseStart - resourceTiming.requestStart),
-          'response: ' + (resourceTiming.responseStart ? resourceTiming.responseEnd - resourceTiming.responseStart : 0),
-        ].join('<br/>')
-
+      if (resourceTiming.name == imgSameOrigin.src) {
+        drawResourceTiming("same-origin", resourceTiming)
+      } else if (resourceTiming.name == imgDiffOrigin.src) {
+        drawResourceTiming("diff-origin", resourceTiming)
+      } else if (resourceTiming.name === jsCORSOrigin.src) {
+        drawResourceTiming("cors-origin", resourceTiming)
       }
     }
 
   }
 
-  window.setTimeout(test, 50)
+  window.setTimeout(test, 100)
 })

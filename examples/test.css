@@ -1,5 +1,6 @@
+@charset "utf-8";
 
-#timing-overview {
+.timing-overview {
   background-image: url(timing-overview-2.png);
   background-repeat: no-repeat;
   -webkit-background-size: cover;
@@ -10,7 +11,8 @@
   position: relative;
   width: 800px;
   height: 500px;
-  margin-right: 200px
+  margin-right: 200px;
+  display: block;
 }
 #navigationStart {
   left: 330px;
@@ -100,7 +102,7 @@
 
 
 
-#resource-overview {
+.resource-overview {
   width: 800px;
   height: 400px;
   background-image: url(./resource-timing-overview-1.png);
@@ -110,58 +112,58 @@
   margin-right: 200px;
 }
 
-#timing-overview > span ,
-#resource-overview > span {
+.timing-overview > span,
+.resource-overview > span {
   position: absolute;
   font-size: 11px;
   color: #f00;
 }
 
-#resource-startTime {
+.resource-startTime {
   left: 180px;
   top: 18px;
 }
-#resource-redirectStart {
+.resource-redirectStart {
   left: 220px;
   top: 32px;
 }
-#resource-redirectEnd {
+.resource-redirectEnd {
   left: 300px;
   top: 45px;
 }
-#resource-fetchStart {
+.resource-fetchStart {
   left: 350px;
   top: 68px;
 }
-#resource-domainLookupStart {
+.resource-domainLookupStart {
   left: 440px;
   top: 85px;
 }
-#resource-domainLookupEnd {
+.resource-domainLookupEnd {
   left: 480px;
   top: 100px;
 }
-#resource-connectStart {
+.resource-connectStart {
   left: 470px;
   top: 118px;
 }
-#resource-secureConnectionStart {
+.resource-secureConnectionStart {
   left: 550px;
   top: 132px;
 }
-#resource-connectEnd {
+.resource-connectEnd {
   left: 510px;
   top: 145px;
 }
-#resource-requestStart {
+.resource-requestStart {
   left: 550px;
   top: 163px;
 }
-#resource-responseStart {
+.resource-responseStart {
   left: 660px;
   top: 178px;
 }
-#resource-responseEnd {
+.resource-responseEnd {
   left: 800px;
   top: 190px;
 }
