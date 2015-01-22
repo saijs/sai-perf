@@ -33,6 +33,8 @@ Sai.server = "https://magentmng.alipay.com/m.gif"
 
 seajs.use(['index', 'jquery'], function(Performance, $) {
 
+  return
+
   function typeOf(type) {
     return function(object) {
       return Object.prototype.toString.call(object) === '[object ' + type + ']'
