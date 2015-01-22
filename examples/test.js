@@ -106,7 +106,6 @@ window.addEventListener("load", function(){
           '<strong>Resource Timing</strong>',
           'initiatorType: ' + resourceTiming.initiatorType,
           'restricted: ' + wasRestricted,
-          'TTFB: ' + (wasRestricted ? -1 : resourceTiming.responseStart - resourceTiming.startTime),
           'duration: ' + (resourceTiming.duration),
           'duration (responseEnd - startTime): ' + (resourceTiming.responseEnd - resourceTiming.startTime),
           'network duration (dns + tcp + waiting(request,TTFB) + response(connect)): ' + networkDuration,
