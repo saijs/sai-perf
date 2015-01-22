@@ -1,40 +1,12 @@
 
-var win = window;
-var doc = win.document;
-var loc = win.location;
-var isFrame = win !== top;
+var win = window
+var loc = win.location
+var doc = win.document
+var isFrame = win !== top
+var supportPerformance = win.performance
+var PAGE_URL = loc.href
 
 var Sai = require("sai");
-var ready = require("ready");
-var detector = require("detector");
-
-var Performance = {
-  wait: 0,
-  redirect: 0,
-  appcache: 0,
-  unload: 0,
-  dnslookup: 0,
-  tcpconnect: 0,
-  requestTime: 0,
-  initDomTreeTime: 0,
-  domReadyTime: 0,
-  loadEventTime: 0,
-  loadTime: 0
-};
-
-function merge(origin, target) {
-  for(var key in target){
-    if (target.hasOwnProperty(key)) {
-      origin[key] = target[key];
-    }
-  }
-  return origin;
-}
-
-
-Sai.perf = function(){
-  var performanceTiming
-};
 
 function addEventListener(element, eventName, handler) {
   if (!element) {return}
@@ -45,6 +17,14 @@ function addEventListener(element, eventName, handler) {
   }
 }
 
+function ready (handler) {
+  if (doc.readyState === "complete") {
+    handler()
+  } else {
+    addEventListener(win, "load", handler)
+  }
+}
+
 // 数字精度，这里精确到毫秒，毫秒以下的 fix 掉。
 // {Number} number, 精确到毫秒的数值。
 function fixedPrecision (number) {
@@ -52,6 +32,9 @@ function fixedPrecision (number) {
 }
 
 function getPagePerformance(){
+  if (!supportPerformance) {
+    return
+  }
   var performanceTiming = win.performance.timing;
   var navigationStart = performanceTiming.navigationStart
   var domainLookupStart = performanceTiming.domainLookupStart
@@ -91,11 +74,58 @@ function getPagePerformance(){
   }
 }
 
+function getResourcePerformance(){
+  if (!supportPerformance || !win.performance.getEntriesByType) {
+    return
+  }
 
-addEventListener(win, "load", function(){
+  var resourcePerf = []
+  var resourceList = win.performance.getEntriesByType("resource");
+
+  for (var i = 0, l = resourceList.length, resourceTiming; i < l; i++) {
+    resourceTiming = resourceList[i];
+
+    var wasRestricted = !resourceTiming.requestStart
+    var hasSSL = !!resourceTiming.secureConnectionStart
+    var redirect = wasRestricted ? -1 : resourceTiming.redirectEnd - resourceTiming.redirectStart
+    var appcache = wasRestricted ? -1 : resourceTiming.domainLookupStart - resourceTiming.fetchStart
+    var dns = wasRestricted ? -1 : resourceTiming.domainLookupEnd - resourceTiming.domainLookupStart
+    var tcp = wasRestricted ? -1 : resourceTiming.connectEnd - resourceTiming.connectStart
+    var request = wasRestricted ? -1 : resourceTiming.responseStart - resourceTiming.requestStart
+    var response = wasRestricted ? -1 : resourceTiming.responseEnd - resourceTiming.responseStart
+    var networkDuration = wasRestricted ? -1 : dns + tcp + request + response
+
+    resourcePerf.push({
+      "initiator-type": resourceTiming.initiatorType,
+      url: resourceTiming.name,
+      restricted: wasRestricted ? 1 : 0,
+      start: fixedPrecision(resourceTiming.startTime),
+      duration: fixedPrecision(resourceTiming.duration),
+      "network-duration": fixedPrecision(networkDuration),
+      redirect: fixedPrecision(redirect),
+      appcache: fixedPrecision(appcache),
+      dns: fixedPrecision(dns),
+      tcp: fixedPrecision(tcp),
+      ssl: hasSSL ? fixedPrecision(resourceTiming.connectEnd - resourceTiming.secureConnectionStart) : -1,
+      request: fixedPrecision(request),
+      response: fixedPrecision(response)
+    })
+  }
+
+  return resourcePerf
+}
+
+ready(function() {
   window.setTimeout(function(){
     var pagePerf = getPagePerformance()
-    console.log(pagePerf)
+    Sai.log(pagePerf, isFrame ? "perf-frame" : "perf-page")
+
+    var resourcePerf = getResourcePerformance()
+    for(var i=0,l=resourcePerf.length; i<l; i++){
+      var resPerf = resourcePerf[i]
+      resPerf.ref = PAGE_URL
+      Sai.log(resPerf, isFrame ? "perf-frame-resource" : "perf-resource")
+    }
   }, 50)
 })
 
