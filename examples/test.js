@@ -89,21 +89,21 @@ window.addEventListener("load", function(){
         $("resource-" + type + "-responseStart").innerHTML = resourceTiming.responseStart
         $("resource-" + type + "-responseEnd").innerHTML = resourceTiming.responseEnd
 
-        var isRestricted = !resourceTiming.requestStart
+        var wasRestricted = !resourceTiming.requestStart
         var hasSSL = !!resourceTiming.secureConnectionStart
-        var redirect = isRestricted ? -1 : resourceTiming.redirectEnd - resourceTiming.redirectStart
-        var appcache = isRestricted ? -1 : resourceTiming.domainLookupStart - resourceTiming.fetchStart
-        var dns = isRestricted ? -1 : resourceTiming.domainLookupEnd - resourceTiming.domainLookupStart
-        var tcp = isRestricted ? -1 : resourceTiming.connectEnd - resourceTiming.connectStart
-        var request = isRestricted ? -1 : resourceTiming.responseStart - resourceTiming.requestStart
-        var response = isRestricted ? -1 : resourceTiming.responseEnd - resourceTiming.responseStart
-        var networkDuration = isRestricted ? -1 : dns + tcp + request + response
+        var redirect = wasRestricted ? -1 : resourceTiming.redirectEnd - resourceTiming.redirectStart
+        var appcache = wasRestricted ? -1 : resourceTiming.domainLookupStart - resourceTiming.fetchStart
+        var dns = wasRestricted ? -1 : resourceTiming.domainLookupEnd - resourceTiming.domainLookupStart
+        var tcp = wasRestricted ? -1 : resourceTiming.connectEnd - resourceTiming.connectStart
+        var request = wasRestricted ? -1 : resourceTiming.responseStart - resourceTiming.requestStart
+        var response = wasRestricted ? -1 : resourceTiming.responseEnd - resourceTiming.responseStart
+        var networkDuration = wasRestricted ? -1 : dns + tcp + request + response
 
         $("output-resource-" + type + "-performance").innerHTML = [
           '<strong>Resource Timing</strong>',
           'initiatorType: ' + resourceTiming.initiatorType,
-          'restricted: ' + isRestricted,
-          'TTFB: ' + (isRestricted ? -1 : resourceTiming.responseStart - resourceTiming.startTime),
+          'restricted: ' + wasRestricted,
+          'TTFB: ' + (wasRestricted ? -1 : resourceTiming.responseStart - resourceTiming.startTime),
           'duration: ' + (resourceTiming.duration),
           'duration (responseEnd - startTime): ' + (resourceTiming.responseEnd - resourceTiming.startTime),
           'network duration (dns + tcp + waiting(request,TTFB) + response(connect)): ' + networkDuration,
