@@ -52,44 +52,45 @@ function fixedPrecision (number) {
 }
 
 function getPagePerformance(){
-    var performanceTiming = win.performance.timing;
-    var navigationStart = performanceTiming.navigationStart
-    var domainLookupStart = performanceTiming.domainLookupStart
-    var connectEnd = performanceTiming.connectEnd
-    var secureConnectionStart = "secureConnectionStart"
-    var responseStart = performanceTiming.responseStart
-    var loadEventStart = performanceTiming.loadEventStart
+  var performanceTiming = win.performance.timing;
+  var navigationStart = performanceTiming.navigationStart
+  var domainLookupStart = performanceTiming.domainLookupStart
+  var connectEnd = performanceTiming.connectEnd
+  var secureConnectionStart = "secureConnectionStart"
+  var responseStart = performanceTiming.responseStart
+  var loadEventStart = performanceTiming.loadEventStart
 
-    var performanceNavigation = win.performance.navigation
+  var performanceNavigation = win.performance.navigation
 
-    var firstPaint = 0;
-    if (performanceTiming.msFirstPaint) {
-      firstPaint = performanceTiming.msFirstPaint
-    } else if (win.chrome && win.chrome.loadTimes) {
-      firstPaint = win.chrome.loadTimes().firstPaintTime * 1000
-    }
+  var firstPaint = 0;
+  if (performanceTiming.msFirstPaint) {
+    firstPaint = performanceTiming.msFirstPaint
+  } else if (win.chrome && win.chrome.loadTimes) {
+    firstPaint = win.chrome.loadTimes().firstPaintTime * 1000
+  }
 
-    var hasSSL = !!performanceTiming[secureConnectionStart]
-    var NAVIGATION_TYPE = ["navigate", "reload", "back_forward"]
+  var hasSSL = !!performanceTiming[secureConnectionStart]
+  var NAVIGATION_TYPE = ["navigate", "reload", "back_forward"]
 
-    return {
-      "page-load": fixedPrecision(loadEventStart - navigationStart),
-      "dom-ready": fixedPrecision(performanceTiming.domContentLoadedEventStart - navigationStart),
-      "first-paint": firstPaint ? fixedPrecision(firstPaint - navigationStart) : -1,
-      "redirect-count": fixedPrecision(performanceNavigation.redirectCount),
-      "navigation-type": NAVIGATION_TYPE[performanceNavigation.type],
-      unload: fixedPrecision(performanceTiming.unloadEventEnd - performanceTiming.unloadEventStart),
-      redirect: fixedPrecision(performanceTiming.redirectEnd - performanceTiming.redirectStart),
-      appcache: fixedPrecision(domainLookupStart - performanceTiming.fetchStart),
-      dns: fixedPrecision(performanceTiming.domainLookupEnd - domainLookupStart),
-      tcp: fixedPrecision(connectEnd - performanceTiming.connectStart),
-      ssl: hasSSL ? fixedPrecision(connectEnd - performanceTiming[secureConnectionStart]) : -1,
-      request: fixedPrecision(responseStart - performanceTiming.requestStart),
-      response: fixedPrecision(performanceTiming.responseEnd - responseStart),
-      processing: fixedPrecision(performanceTiming.domComplete - performanceTiming.domLoading),
-      load: fixedPrecision(performanceTiming.loadEventEnd - loadEventStart)
-    }
+  return {
+    "page-load": fixedPrecision(loadEventStart - navigationStart),
+    "dom-ready": fixedPrecision(performanceTiming.domContentLoadedEventStart - navigationStart),
+    "first-paint": firstPaint ? fixedPrecision(firstPaint - navigationStart) : -1,
+    "redirect-count": fixedPrecision(performanceNavigation.redirectCount),
+    "navigation-type": NAVIGATION_TYPE[performanceNavigation.type],
+    unload: fixedPrecision(performanceTiming.unloadEventEnd - performanceTiming.unloadEventStart),
+    redirect: fixedPrecision(performanceTiming.redirectEnd - performanceTiming.redirectStart),
+    appcache: fixedPrecision(domainLookupStart - performanceTiming.fetchStart),
+    dns: fixedPrecision(performanceTiming.domainLookupEnd - domainLookupStart),
+    tcp: fixedPrecision(connectEnd - performanceTiming.connectStart),
+    ssl: hasSSL ? fixedPrecision(connectEnd - performanceTiming[secureConnectionStart]) : -1,
+    request: fixedPrecision(responseStart - performanceTiming.requestStart),
+    response: fixedPrecision(performanceTiming.responseEnd - responseStart),
+    processing: fixedPrecision(performanceTiming.domComplete - performanceTiming.domLoading),
+    load: fixedPrecision(performanceTiming.loadEventEnd - loadEventStart)
+  }
 }
+
 
 addEventListener(win, "load", function(){
   window.setTimeout(function(){
