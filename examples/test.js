@@ -66,7 +66,7 @@ window.addEventListener("load", function(){
       'ssl negotiation: ' + (hasSSL ? performanceTiming.connectEnd - performanceTiming.secureConnectionStart : -1),
       'request (TTFB): ' + (performanceTiming.responseStart - performanceTiming.requestStart),
       'response: ' + (performanceTiming.responseEnd - performanceTiming.responseStart),
-      'processing: ' + (performanceTiming.domComplete ? performanceTiming.domComplete - performanceTiming.responseStart : 0), // domComplete | loadEventStart
+      'processing: ' + (performanceTiming.domComplete - performanceTiming.domLoading),
       'load: ' + (performanceTiming.loadEventEnd ? performanceTiming.loadEventEnd - performanceTiming.loadEventStart : 0)
     ].join('<br/>')
 
