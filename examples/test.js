@@ -49,11 +49,14 @@ window.addEventListener("load", function(){
       firstPaint = chrome.loadTimes().firstPaintTime * 1000
     }
     var hasSSL = !!performanceTiming.secureConnectionStart
+    var NAVIGATION_TYPE = ["navigate", "reload", "back_forward"]
     $("output-page-performance").innerHTML = [
       '<strong>Performance Timing</strong>',
       // 'Page Load: ' + (performanceTiming.loadEventStart - performanceTiming.navigationStart),
       // 'DOM Ready: ' + (performanceTiming.loadEventStart - performanceTiming.navigationStart),
       'First Paint: ' + (firstPaint ? firstPaint - performanceTiming.navigationStart : -1) + '(' + firstPaint + ', ' + performanceTiming.navigationStart + ')',
+      'redirect count: ' + performance.navigation.redirectCount,
+      'navigation type: ' + NAVIGATION_TYPE[performance.navigation.type],
       '',
       'unload: ' + (performanceTiming.unloadEventEnd - performanceTiming.unloadEventStart),
       'redirect: ' + (performanceTiming.redirectEnd - performanceTiming.redirectStart),
