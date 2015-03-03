@@ -116,7 +116,7 @@ function getResourcePerformance(){
 }
 
 ready(function() {
-  window.setTimeout(function(){
+  win.setTimeout(function(){
     var pagePerf = getPagePerformance()
     Sai.log(pagePerf, isFrame ? "perf-frame" : "perf-page")
 
@@ -129,4 +129,5 @@ ready(function() {
   }, 50)
 })
 
+/* global module */
 module.exports = Sai;
