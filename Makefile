@@ -8,6 +8,9 @@ publish: publish-doc
 	@git tag $(version)
 	@git push origin $(version)
 
+build:
+	@spm build --standalone --ignore sai --global sai:monitor
+
 build-doc:
 	@spm doc build
 

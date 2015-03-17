@@ -6,7 +6,7 @@ var isFrame = win !== top
 var supportPerformance = win.performance
 var PAGE_URL = loc.href
 
-var Sai = require("sai");
+var Sai = require("sai")
 
 function addEventListener(element, eventName, handler) {
   if (!element) {return}
@@ -115,19 +115,21 @@ function getResourcePerformance(){
   return resourcePerf
 }
 
-ready(function() {
-  win.setTimeout(function(){
-    var pagePerf = getPagePerformance()
-    Sai.log(pagePerf, isFrame ? "perf-frame" : "perf-page")
+Sai.perf = function(){
+    ready(function() {
+      win.setTimeout(function(){
+        var pagePerf = getPagePerformance()
+        Sai.log(pagePerf, isFrame ? "perf-frame" : "perf-page")
 
-    var resourcePerf = getResourcePerformance()
-    for(var i=0,l=resourcePerf.length; i<l; i++){
-      var resPerf = resourcePerf[i]
-      resPerf.ref = PAGE_URL
-      Sai.log(resPerf, isFrame ? "perf-frame-resource" : "perf-resource")
-    }
-  }, 50)
-})
+        var resourcePerf = getResourcePerformance()
+        for(var i=0,l=resourcePerf.length; i<l; i++){
+          var resPerf = resourcePerf[i]
+          resPerf.ref = PAGE_URL
+          Sai.log(resPerf, isFrame ? "perf-frame-resource" : "perf-resource")
+        }
+      }, 50)
+    })
+}
 
 /* global module */
 module.exports = Sai;

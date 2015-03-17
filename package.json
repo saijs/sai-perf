@@ -19,9 +19,7 @@
   "spm": {
     "main": "index.js",
     "dependencies": {
-      "sai": "3.0.0",
-      "ready": "0.0.0",
-      "detector": "2.2.0"
+      "sai": "3.0.0"
     },
     "devDependencies": {
       "expect.js": "0.3.1",
