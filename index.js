@@ -60,7 +60,7 @@ function getPagePerformance(){
     "dom-ready": fixedPrecision(performanceTiming.domContentLoadedEventStart - navigationStart),
     "first-paint": firstPaint ? fixedPrecision(firstPaint - navigationStart) : -1,
     "redirect-count": fixedPrecision(performanceNavigation.redirectCount),
-    "navigation-type": NAVIGATION_TYPE[performanceNavigation.type],
+    "navigation-type": NAVIGATION_TYPE[performanceNavigation.type] || "",
     unload: fixedPrecision(performanceTiming.unloadEventEnd - performanceTiming.unloadEventStart),
     redirect: fixedPrecision(performanceTiming.redirectEnd - performanceTiming.redirectStart),
     appcache: fixedPrecision(domainLookupStart - performanceTiming.fetchStart),
