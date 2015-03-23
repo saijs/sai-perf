@@ -76,7 +76,7 @@ function getPagePerformance(){
 
 function getResourcePerformance(){
   if (!supportPerformance || !win.performance.getEntriesByType) {
-    return
+    return []
   }
 
   var resourcePerf = []
